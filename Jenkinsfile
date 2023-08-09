@@ -16,6 +16,7 @@ pipeline {
       steps {
         echo 'this is only for brunch dev'
       }
+    }
     
      stage('Build') {
       steps {
