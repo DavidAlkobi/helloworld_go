@@ -1,40 +1,39 @@
 pipeline {
-  // Run on an agent where we want to use Go
-  agent any
-
-  // Ensure the desired Go version is installed for all stages,
-  // using the name defined in the Global Tool Configuration
-  tools { go 'go 1.20.7' }
-
-
-  stages {
-
-    stage('for dev branch') {
-      when {
-        branch 'dev'
-      }
-      steps {
-        echo 'this is only for brunch dev'
-      }
-    }
-    
-     stage('Build') {
-      steps {
-       sh 'go build -o myprogram'
-      }
-     }
-
-    stage('Test') {
-      steps {
-        sh 'go test'
-      }
-    }
-  }
+    agent any
+    tools { go 'go 1.20.7' }
   
-  post {
-    always {
-            archiveArtifacts artifacts: 'myprogram', onlyIfSuccessful: true
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('dev'){
+            when {
+                branch 'dev'
+            }
+            steps {
+                script {
+                    echo('This stage only works with branch dev')
+                }
+            }
+        }
+        
+        stage('Build') {
+            steps {
+                script {
+                    sh 'go build'
+                }
+            }
+        }
+        
+        stage('Test') {
+            steps {
+                script {
+                    sh 'go test'
+                }
+            }
         }
     }
-  }
-
+}
