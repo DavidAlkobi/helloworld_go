@@ -1,6 +1,8 @@
 pipeline {
   // Run on an agent where we want to use Go
-  agent any
+  agent { label 'host'
+  }
+  
 
   // Ensure the desired Go version is installed for all stages,
   // using the name defined in the Global Tool Configuration
